@@ -1,0 +1,10 @@
+                        <select class="form-select" aria-label="Default select example">
+                        <?php
+                        $query = "SELECT * FROM pembeli";
+                        $pdo = connect();
+                        $stmt = $pdo->query($query);
+                        while ($row1 = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                          echo "<option value='{$row1['id_pembeli']}'>{$row1['nama_pembeli']}</option>";
+                        }
+                        ?>
+                        </select>
