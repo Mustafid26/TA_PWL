@@ -1,19 +1,17 @@
 <?php 
-require_once __DIR__ . "/function3.php"; 
-
-if(isset($_POST['tambahData'])) {
-  $tanggal = $_POST['tanggal'];
-  $id_pembeli = $_POST['nama_pembeli'];
-  $id_hp = $_POST['merk'];
-  
-  tambahData($tanggal,$id_pembeli,$id_hp);
-  header("location: transaksi.php");
-}
-if(isset($_GET['id'])){
-  $id = $_GET['id'];
-
-  hapusData($id);
-  header("location: transaksi.php");
+include("koneksi.php");
+if(isset($_POST['submit'])){
+  $id_pembayaran = $_POST['bank'];
+  //direktori simpan foto bukti
+  $direktori      = "bukti/";
+  $file_name      = $_FILES['xgambar']['name'];
+  //memindahkan inputan foto ke dalam direktori
+  move_uploaded_file($_FILES['xgambar']['tmp_name'],$direktori.$file_name);
+  // memasukkan data ke dalam database
+  $simpan = mysqli_query($koneksi, "INSERT INTO bayar (id_pembayaran, gambar) VALUES ('$id_pembayaran','$file_name')");
+  if($simpan){
+      header("location: status.php");
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -45,7 +43,7 @@ if(isset($_GET['id'])){
         >
           <div class="container">
             <a class="navbar-brand fw-bold fs-4" href="index.php"
-              >Record<span class="text-primary">JualanKU!</span></a
+              >Kai<span class="text-primary">SHOP!</span></a
             >
             <button
               class="navbar-toggler"
@@ -64,26 +62,26 @@ if(isset($_GET['id'])){
                   <a
                     class="nav-link text-uppercase active"
                     aria-current="page"
-                    href="stock.php"
-                    ><b>Stock</b></a
+                    href="produk.php"
+                    ><b>Produk</b></a
                   >
                 </li>
                 <li class="nav-item">
                   <a
                     class="nav-link text-uppercase active"
                     aria-current="page"
-                    href="pembeli.php"
+                    href="checkout.php"
                   >
-                    <b>Pembeli</b></a
+                    <b>Checkout</b></a
                   >
                 </li>
                 <li class="nav-item">
                   <a
                     class="nav-link text-uppercase"
                     aria-current="page"
-                    href="transaksi.php"
+                    href="status.php"
                   >
-                    <b>Transaksi</b></a
+                    <b>Status</b></a
                   >
                 </li>
               </ul>
@@ -95,95 +93,6 @@ if(isset($_GET['id'])){
       <br>
       <br>
       <br>
-      
-      <div class="card-body">
-        <!-- Button trigger modal -->
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Tambah Transaksi
-        </button>
-
-        <!-- Modal -->
-        <div
-          class="modal fade"
-          id="exampleModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Transaksi</h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <!-- Form tambah data -->
-                <div class="container-sm card col-md-10 mt-5">
-                  <div class="card-header">Masukkan Transaksi</div>
-                  <div class="card-body">
-                    <!-- Start Form -->
-                    <form action="" method="POST">
-                      <div class="mb-3">
-                      <label class="form-label">Tanggal</label>
-                        <input
-                          type="date"
-                          name="tanggal"
-                          class="form-control"
-                          id="tanggal"
-                          required
-                        />
-                        <label for="nama_pembeli">Nama Pembeli</label>
-                        <select name= "nama_pembeli" class="form-select" aria-label="Default select example">
-                          <option value="">-Pilih-</option>
-                          <?php
-                          $query = "SELECT * FROM pembeli";
-                          $pdo = connect();
-                          $stmt = $pdo->query($query);
-                          while ($row1 = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<option value='{$row1['id_pembeli']}'>{$row1['nama_pembeli']}</option>";
-                          }
-                          ?>
-                          </select>
-                        <label for="merk">Merk</label>
-                        <select name="merk" class="form-select" aria-label="Default select example">
-                          <option value="">-Pilih-</option>
-                          <?php
-                          $query = "SELECT * FROM handphone";
-                          $pdo = connect();
-                          $stmt = $pdo->query($query);
-                          while ($row1 = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<option value='{$row1['id_hp']}'>{$row1['merk']} {$row1['tipe']}</option>";
-                          }
-                          ?>
-                        </select>
-                      </div>
-                      <button
-                        type="submit"
-                        name="tambahData"
-                        class="btn btn-primary mb-3"
-                      >
-                        Submit
-                      </button>
-                    </form>
-                    <!-- End Form -->
-                  </div>
-                </div>
-
-                <!-- End Form tambah data -->
-              </div>
-            </div>
-          </div>
-        </div>
         <!-- table data -->
         <div class="container-sm card mt-5 col-md-8">
           <div class="card-body">
@@ -192,34 +101,86 @@ if(isset($_GET['id'])){
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col">Tanggal</th>
-                  <th scope="col">Nama Pembeli</th>
                   <th scope="col">Produk</th>
+                  <th scope="col">Harga</th>
+                  <th scope="col">Status</th>
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                <?php 
-                    $nomor = 1; 
-                    foreach(ambilData() as $data) { ?>
-                <tr>
-                  <th scope="row"><?php echo $nomor++ ?></th>
-                  <td><?php echo date("d F Y", strtotime($data['tanggal'])) ?></td>
-                  <td><?php echo$data['nama_pembeli'] ?></td>
-                  <td><?php echo$data['merk'] ?></td>
+              <?php 
+                  $no = 1;
+                  $total_harga = 0;
+                  $tampil = mysqli_query($koneksi, "SELECT * FROM transaksi 
+                  INNER JOIN handphone ON transaksi.id_hp = handphone.id_hp ") or die (mysqli_error($koneksi));
+                  while($data = mysqli_fetch_array($tampil)) :
+                    $harga_hp = $data['harga_hp'];
+                    // menghitung total harga sewa berdasarkan durasi dan harga sewa per hari
+                    
+                    // Hitung total harga
+                    $total_harga += $harga_hp;
+                  ?>
+                  <th scope="row"><?=$no++;?></th>
+                  <td><?=$data['merk']?></td>
+                  <td>Rp. <?=number_format ($data['harga_hp'],0,',','.')?></td>
+                  <td><?=$data['status']?></td>
                   <td>
                     <a
-                      href="?id=<?php echo $data['id_transaksi'] ?>"
-                      onclick="return confirm ('Yakin ingin menghapus?')"
-                      type="button"
-                      class="btn btn-danger"
-                      >Hapus</a
-                    >
+                    href="del.php?id=<?=$data['id_transaksi']?>"
+                    onclick="return confirm('Apakah anda yakin ingin menghapus barang ini?')"
+                    class="btn btn-danger"
+                    ><i class="fa-solid fa-trash"></i></a>
                   </td>
-                </tr>
-                <?php } ?>
+              </tr>
+              <?php endwhile; ?>
               </tbody>
+              <tfoot>
+              <tr>
+                <th colspan="2">Total Harga</th>
+                <th>Rp <?= number_format($total_harga, 0, ',', '.') ?></th>
+                <th colspan="2"></th>
+              </tr>
+            </tfoot>
             </table>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Bayar
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Silahkan Pilih Metode Pembayaran Anda</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                          <label for="">Metode Pembayaran</label>
+                          <select class="form-select" name="bank" id="">
+                            <option value="">-PILIH-</option>
+                            <?php 
+                            $tampil = mysqli_query($koneksi, "SELECT * FROM metodepembayaran ") or die (mysqli_error($koneksi));
+                            while($data = mysqli_fetch_array($tampil)){
+                              echo "<option value = $data[id_pembayaran] > $data[bank] Rek/No : $data[pembayaran] </option>";
+                            }
+                            ?>
+                          </select>
+                          <br>
+                          <div class="mb-3">
+                              <label class="form-label">Bukti Pembayaran</label>
+                              <input type="file" name="xgambar" class="form-control" required>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" name="submit" value ="Submit" class="btn btn-primary">
+                        </div>
+                    </form> 
+                </div>
+              </div>
+            </div>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
           </div>
         </div>
         <!-- end table data -->

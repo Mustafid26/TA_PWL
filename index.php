@@ -30,7 +30,7 @@ include("koneksi.php");
         >
           <div class="container">
             <a class="navbar-brand fw-bold fs-4" href="index.php"
-              >Record<span class="text-primary">JualanKU!</span></a
+              >Kai<span class="text-primary">SHOP!</span></a
             >
             <button
               class="navbar-toggler"
@@ -49,26 +49,26 @@ include("koneksi.php");
                   <a
                     class="nav-link text-uppercase active"
                     aria-current="page"
-                    href="stock.php"
-                    ><b>Stock</b></a
+                    href="produk.php"
+                    ><b>Produk</b></a
                   >
                 </li>
                 <li class="nav-item">
                   <a
                     class="nav-link text-uppercase active"
                     aria-current="page"
-                    href="pembeli.php"
+                    href="checkout.php"
                   >
-                    <b>Pembeli</b></a
+                    <b>Checkout</b></a
                   >
                 </li>
                 <li class="nav-item">
                   <a
                     class="nav-link text-uppercase active"
                     aria-current="page"
-                    href="transaksi.php"
+                    href="status.php"
                   >
-                    <b>Transaksi</b></a
+                    <b>Status</b></a
                   >
                 </li>
               </ul>
@@ -82,12 +82,10 @@ include("koneksi.php");
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 data-aos="fade-left" class="text-uppercase text-white fw-semibold display-1">JualanKU!</h1>
-                    <h5 class="text-white mt-3 mb-4" data-aos="fade-right">KITA MELAYANI RECORD PENJUALAN ANDA!</h5>
+                    <h1 data-aos="fade-left" class="text-uppercase text-white fw-semibold display-1">Gaperlu Bingung Beli HP!</h1>
+                    <h5 class="text-white mt-3 mb-4" data-aos="fade-right">TEMPAT JUAL HP TERMANTAP DI INDONESIA!</h5>
                     <div data-aos="fade-up" data-aos-delay="50">
-                        <a href="stock.php" class="btn btn-brand me-2">Tambah Stock</a>
-                        <a href="pembeli.php" class="btn btn-brand me-2">Tambah Pembeli</a>
-                        <a href="transaksi.php" class="btn btn-brand me-2">Tambah Transaksi</a>
+                        <a href="stock.php" class="btn btn-brand me-2">Lihat Produk</a>
 
                     </div>
                 </div>
@@ -101,9 +99,9 @@ include("koneksi.php");
             <div class="row">
                 <div class="col-12 text-center" data-aos="fade-down" data-aos-delay="50">
                     <div class="section-title">
-                        <h1 class="display-4 fw-semibold">About us</h1>
+                        <h1 class="display-4 fw-semibold">Tentang Toko Kami</h1>
                         <div class="line"></div>
-                        <p>We love to craft digital experiances for brands rather than crap and more lorem ipsums and do crazy skills</p>
+                        <p>Di toko kami, terdapat berbagai merek dan tipe hp terbaru untuk memenuhi kebutuhan komunikasi dan teknologi Anda</p>
                     </div>
                 </div>
             </div>
@@ -115,9 +113,9 @@ include("koneksi.php");
             <div class="row">
                 <div class="col-12 text-center" data-aos="fade-down" data-aos-delay="150">
                     <div class="section-title">
-                        <h1 class="display-4 fw-semibold">Awesome Services</h1>
+                        <h1 class="display-4 fw-semibold">Layanan Kita</h1>
                         <div class="line"></div>
-                        <p>Melayani berbagai macam produk yang dijual dan melayani berbagai transaksi</p>
+                        <p>Melayani berbagai macam produk handphone yang dijual yang tentunya terbaru dan original !</p>
                     </div>
                 </div>
             </div>
@@ -127,8 +125,8 @@ include("koneksi.php");
                         <div class="iconbox">
                           <i class="fa-solid fa-box"></i>
                         </div>
-                        <h5 class="mt-4 mb-3">STOCK</h5>
-                        <p>Berisi berbagai macam merk produk yang dijual</p>
+                        <h5 class="mt-4 mb-3">STOCK MELIMPAH!</h5>
+                        <p>Tenang gaperlu khawatir di toko kami akan selalu menyiadakan produk-produk terbaru dan tentunya stock akan ada selalu!</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6" data-aos="fade-down" data-aos-delay="250">
@@ -136,8 +134,9 @@ include("koneksi.php");
                         <div class="iconbox">
                             <i class="fa-solid fa-person"></i>
                         </div>
-                        <h5 class="mt-4 mb-3">PEMBELI</h5>
-                        <p>Di dalam page pembeli terdapat daftar nama-nama pembeli handphone.</p>
+                        <h5 class="mt-4 mb-3">CUSTOMER SERVICE</h5>
+                        <p>Customer Service kami yang siap membantu anda untuk mengatasi masalah anda saat belanja</p>
+                        <br>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6" data-aos="fade-down" data-aos-delay="350">
@@ -146,56 +145,30 @@ include("koneksi.php");
                           <i class="fa-solid fa-handshake"></i>
                         </div>
                         <h5 class="mt-4 mb-3">TRANSAKSI</h5>
-                        <p>Berisi tentang daftar transaksi yang telah dilakukan.</p>
+                        <p>Transaksi kami tentunya sangat aman dan terpercaya</p>
+                        <br>
+                        <br>
                     </div>
                 </div>
         </div>
     </section>
 
-    <!-- COUNTER -->
-    <section id="counter" class="section-padding">
-        <div class="container text-center">
-            <div class="row g-4">
-              <?php
-                $query2 = "SELECT COUNT(*) as jumlah FROM handphone";
-                $pdo = connect();
-                $statement2 = $pdo->query($query2);
-                // Mengambil hasil query dan menampilkan jumlah data
-                $row2 = $statement2->fetch(PDO::FETCH_ASSOC);
-              ?>
-                <div class="col-lg-3 col-sm-6" data-aos="fade-down" data-aos-delay="150">
-                    <h1 class="text-white display-4"><?php echo $row2['jumlah'] ?></h1>
-                    <h6 class="text-uppercase mb-0 text-white mt-3">Total Stock</h6>
-                </div>
-                <?php
-                  $query3 = "SELECT COUNT(*) as jumlah2 FROM pembeli";
-                  $pdo = connect();
-                  $statement3 = $pdo->query($query3);
-                  // Mengambil hasil query dan menampilkan jumlah data
-                  $row3 = $statement3->fetch(PDO::FETCH_ASSOC);
-                ?>
-                <div class="col-lg-3 col-sm-6" data-aos="fade-down" data-aos-delay="250">
-                    <h1 class="text-white display-4"><?php echo $row3['jumlah2'] ?></h1>
-                    <h6 class="text-uppercase mb-0 text-white mt-3">Total Pembeli</h6>
-                </div>
-                <?php
-                  $query4 = "SELECT COUNT(*) as jumlah3 FROM transaksi";
-                  $pdo = connect();
-                  $statement4 = $pdo->query($query4);
-                  // Mengambil hasil query dan menampilkan jumlah data
-                  $row4 = $statement4->fetch(PDO::FETCH_ASSOC);
-                ?>
-                <div class="col-lg-3 col-sm-6" data-aos="fade-down" data-aos-delay="350">
-                    <h1 class="text-white display-4"><?php echo $row4['jumlah3'] ?></h1>
-                    <h6 class="text-uppercase mb-0 text-white mt-3">Transaksi Berhasil</h6>
-                </div>
-                <div class="col-lg-3 col-sm-6" data-aos="fade-down" data-aos-delay="450">
-                    <h1 class="text-white display-4">50+</h1>
-                    <h6 class="text-uppercase mb-0 text-white mt-3">Kurir</h6>
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center" data-aos="fade-down" data-aos-delay="50">
+                    <div class="section-title">
+                        <h1 class="display-4 fw-semibold">Lokasi</h1>
+                        <div class="line"></div>
+                        <p>Bagi kamu yang ingin melihat produk langsung dan pengen bayar langsung ditempat bisa langsung datang ke offline store kami!</p>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63315.94686166011!2d110.45588556229168!3d-7.326166594118729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a787e692c9c69%3A0xf6a53e23a0c4462c!2sSalatiga%2C%20Salatiga%20City%2C%20Central%20Java!5e0!3m2!1sen!2sid!4v1683139323393!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
             </div>
-        </div>
     </section>
+
+
+    
 
 
    <!-- Footer -->

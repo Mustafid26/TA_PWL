@@ -1,0 +1,38 @@
+.prosedur h1 {
+    font-size: 50px;
+    color: #063831;
+    text-align: center;
+    font-style: bold;
+    font-family: "DM Serif Display", serif;
+  }
+  
+  .prosedur h2 {
+    font-size: 20px;
+    color: #063831;
+    text-align: center;
+  }
+  
+  /* booking */
+  .booking h1 {
+    font-size: 50px;
+    color: #063831;
+    text-align: center;
+    font-style: bold;
+    font-family: "DM Serif Display", serif;
+  }
+  
+  .booking .card .card-body:hover {
+    background-color: #9ee9da;
+    color: #ffffff;
+    cursor: pointer;
+    transition: 0.5s;
+  }
+  .booking .card .card-body:hover img {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+  }
+  .booking .card .card-body .services-title {
+    font-weight: 500;
+    font-size: 20px;
+  }
+  
