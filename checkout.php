@@ -1,6 +1,12 @@
 <?php 
 include("koneksi.php"); 
-
+session_start();
+if(!isset($_SESSION["username"])){
+    header("location: login.php");
+    exit();
+}else if(isset($_SESSION['username'])){
+  $username = $_SESSION['username'];
+}
 if(isset($_POST['tambahData'])) {
   $id_hp = $_POST['merk'];
   $nama_pembeli = $_POST['nama_pembeli'];
@@ -38,14 +44,10 @@ if(isset($_POST['tambahData'])) {
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body id="home">
-    <div class="card text-center">
-      <div class="card-header">
-        <!--Navbar-->
-        <nav
-          class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top"
-        >
-          <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="index.php"
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+      <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="index-login.php"
               >Kai<span class="text-primary">SHOP!</span></a
             >
             <button
@@ -59,39 +61,21 @@ if(isset($_POST['tambahData'])) {
             >
               <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a
-                    class="nav-link text-uppercase active"
-                    aria-current="page"
-                    href="produk.php"
-                    ><b>Produk</b></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link text-uppercase"
-                    aria-current="page"
-                    href="checkout.php"
-                  >
-                    <b>Checkout</b></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link text-uppercase active"
-                    aria-current="page"
-                    href="status.php"
-                  >
-                    <b>Status</b></a
-                  >
-                </li>
-              </ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index-login.php">Beranda</a>
+                    </li>
+                        <a class="nav-link" href="#location">Checkout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="status.php">Status</a>
+                    </li>
+                </ul>
+                <a href="login.php" class="btn btn-brand ms-lg-3">Logout</a>
             </div>
-          </div>
-        </nav>
-        <!--Navbar End-->
+        </div>
+      </nav>
       </div>
       <br>
       <br>
@@ -104,8 +88,8 @@ if(isset($_POST['tambahData'])) {
             <!-- Start Form -->
             <form action="" method="POST" enctype="multipart/form-data">
                  <div class="mb-3">
-                    <label class="form-label">Nama Pembeli</label>
-                    <input type="text" name="nama_pembeli" class="form-control" required>
+                    <label class="form-label">Nama Penerima</label>
+                    <input type="text" name="nama_pembeli" class="form-control" placeholder="<?php echo $username ?>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Alamat</label>
@@ -114,12 +98,12 @@ if(isset($_POST['tambahData'])) {
                 <div class="mb-3">
                         <label for="merk">Merk</label>
                         <select name="merk" class="form-select" aria-label="Default select example">
-                          <option value="">-Pilih-</option>
+                        <option value="">-Pilih-</option>
                           <?php
-                          $query = mysqli_query($koneksi, "SELECT * FROM handphone");
-                          while($data = mysqli_fetch_array($query)){
-                              $harga_format = number_format ($data['harga_hp'],0,',','.');
-                              echo "<option value = $data[id_hp] > $data[merk] Rp . $harga_format </option>";
+                            $query = mysqli_query($koneksi, "SELECT * FROM handphone");
+                            while($data = mysqli_fetch_array($query)){
+                                $harga_format = number_format ($data['harga_hp'],0,',','.');
+                                echo "<option value = $data[id_hp] > $data[merk] Rp . $harga_format </option>";
                           }
                           ?>
                         </select>

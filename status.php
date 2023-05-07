@@ -1,17 +1,9 @@
 <?php 
 include("koneksi.php");
-if(isset($_POST['submit'])){
-  $id_pembayaran = $_POST['bank'];
-  //direktori simpan foto bukti
-  $direktori      = "bukti/";
-  $file_name      = $_FILES['xgambar']['name'];
-  //memindahkan inputan foto ke dalam direktori
-  move_uploaded_file($_FILES['xgambar']['tmp_name'],$direktori.$file_name);
-  // memasukkan data ke dalam database
-  $simpan = mysqli_query($koneksi, "INSERT INTO bayar (id_pembayaran, gambar) VALUES ('$id_pembayaran','$file_name')");
-  if($simpan){
-      header("location: status.php");
-  }
+session_start();
+if(!isset($_SESSION["username"])){
+    header("location: login.php");
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -35,14 +27,10 @@ if(isset($_POST['submit'])){
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body id="home">
-    <div class="card text-center">
-      <div class="card-header">
-        <!--Navbar-->
-        <nav
-          class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top"
-        >
-          <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="index.php"
+     <!-- NAVBAR -->
+     <nav class="navbar navbar-expand-lg bg-white sticky-top">
+      <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="index-login.php"
               >Kai<span class="text-primary">SHOP!</span></a
             >
             <button
@@ -56,45 +44,28 @@ if(isset($_POST['submit'])){
             >
               <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a
-                    class="nav-link text-uppercase active"
-                    aria-current="page"
-                    href="produk.php"
-                    ><b>Produk</b></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link text-uppercase active"
-                    aria-current="page"
-                    href="checkout.php"
-                  >
-                    <b>Checkout</b></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link text-uppercase"
-                    aria-current="page"
-                    href="status.php"
-                  >
-                    <b>Status</b></a
-                  >
-                </li>
-              </ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index-login.php">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="checkout.php">Checkout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="status.php">Status</a>
+                    </li>
+                </ul>
+                <a href="logout.php" class="btn btn-brand ms-lg-3">Logout</a>
             </div>
-          </div>
-        </nav>
-        <!--Navbar End-->
+        </div>
+      </nav>
       </div>
       <br>
       <br>
       <br>
         <!-- table data -->
-        <div class="container-sm card mt-5 col-md-8">
+        <div class="container-sm card mt-5 col-md-8 mb-5">
           <div class="card-body">
             <!-- table bootstrap -->
             <table class="table">
@@ -113,13 +84,14 @@ if(isset($_POST['submit'])){
                   $total_harga = 0;
                   $tampil = mysqli_query($koneksi, "SELECT * FROM transaksi 
                   INNER JOIN handphone ON transaksi.id_hp = handphone.id_hp ") or die (mysqli_error($koneksi));
+                  $jumlah_data = mysqli_num_rows($tampil);
                   while($data = mysqli_fetch_array($tampil)) :
                     $harga_hp = $data['harga_hp'];
                     // menghitung total harga sewa berdasarkan durasi dan harga sewa per hari
                     
                     // Hitung total harga
                     $total_harga += $harga_hp;
-                  ?>
+                ?>
                   <th scope="row"><?=$no++;?></th>
                   <td><?=$data['merk']?></td>
                   <td>Rp. <?=number_format ($data['harga_hp'],0,',','.')?></td>
@@ -134,19 +106,25 @@ if(isset($_POST['submit'])){
               </tr>
               <?php endwhile; ?>
               </tbody>
-              <tfoot>
-              <tr>
-                <th colspan="2">Total Harga</th>
-                <th>Rp <?= number_format($total_harga, 0, ',', '.') ?></th>
-                <th colspan="2"></th>
-              </tr>
-            </tfoot>
+              <?php
+              if($jumlah_data >0) {
+              echo '<tfoot>
+                <tr>
+                  <th colspan="2">Total Harga</th>
+                  <th>Rp ' . number_format($total_harga, 0, ',', '.') . ' </th>
+                  <th colspan="2"></th>
+                </tr>
+              </tfoot>';
+              }
+              ?>
             </table>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Bayar
-            </button>
-
+                  <?php
+                    if($jumlah_data > 0){
+                      echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Bayar
+                      </button>';
+                    }
+                  ?>
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
@@ -156,7 +134,7 @@ if(isset($_POST['submit'])){
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form method="post" enctype="multipart/form-data">
+                    <form action="bayar.php" method="post" enctype="multipart/form-data">
                           <label for="">Metode Pembayaran</label>
                           <select class="form-select" name="bank" id="">
                             <option value="">-PILIH-</option>
@@ -171,6 +149,13 @@ if(isset($_POST['submit'])){
                           <div class="mb-3">
                               <label class="form-label">Bukti Pembayaran</label>
                               <input type="file" name="xgambar" class="form-control" required>
+                          </div>
+                          <div class="mb-3">
+                              <label class="form-label">Total</label>
+                              <?php
+                              echo'
+                              <input type="number" class="form-control" placeholder = "Rp ' . number_format($total_harga, 0, ',', '.') . ' " readonly>'
+                              ?>
                           </div>
                         </div>
                         <div class="modal-footer">

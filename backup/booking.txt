@@ -1,0 +1,32 @@
+                               <!-- booking -->
+                                <div class="booking">
+                                    <div class="row row-cols-1 row-cols-md-4 g-4" style="margin-left: 120px">
+                                        <?php
+                                            $query = "SELECT * FROM handphone";
+                                            $result = mysqli_query ($koneksi, $query);
+
+                                            while ($row = mysqli_fetch_array ($result)){
+                                        ?>
+                                    <form action="index-login.php?id=<?= $row ['id_hp'] ?>" method="get">
+                                    <div class="col" style="width: 22%">
+                                    <div class="card text-center">
+                                        <img
+                                        src="media/<?= $row ['gambar']?>"
+                                        class="card-img-top"
+                                        alt="..."
+                                        />
+                                        <div class="card-body">
+                                        <h2 class="card-title">Samsung S12</h2>
+                                        <h5 class="card-text">Rp. 18.000.000</h5>
+                                        <li class="desc">OS	Android 10 
+                                        <li class="desc">Chipset	Mediatek MT6762D Helio A25 (12 nm)
+                                        <li class="desc">CPU	Octa-core (4x1.8 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)
+                                        <li class="desc">GPU	PowerVR GE8320</li> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </section>

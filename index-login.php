@@ -1,5 +1,13 @@
 <?php
 include("koneksi.php");
+session_start();
+if(!isset($_SESSION["username"])){
+    header("location: login.php");
+    exit();
+}
+if(isset($_SESSION['username'])){
+    $username = $_SESSION['username'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +33,7 @@ include("koneksi.php");
      <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg bg-white sticky-top">
       <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="index.php"
+            <a class="navbar-brand fw-bold fs-4" href="index-login.php"
               >Kai<span class="text-primary">SHOP!</span></a
             >
             <button
@@ -45,9 +53,6 @@ include("koneksi.php");
                         <a class="nav-link" href="#hero">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">Tentang</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#produk">Produk</a>
                     </li>
                     <li class="nav-item">
@@ -56,8 +61,14 @@ include("koneksi.php");
                     <li class="nav-item">
                         <a class="nav-link" href="#location">Lokasi</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="checkout.php">Checkout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="status.php">Status</a>
+                    </li>
                 </ul>
-                <a href="login.php" class="btn btn-brand ms-lg-3">Login</a>
+                <a href="logout.php" class="btn btn-brand ms-lg-3">Logout</a>
             </div>
         </div>
     </nav>
@@ -66,116 +77,126 @@ include("koneksi.php");
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 data-aos="fade-left" class="text-uppercase text-white fw-semibold display-1">Selamat Datang!</h1>
+                    <h1 data-aos="fade-left" class="text-uppercase text-white fw-semibold display-1">Selamat Datang <br> <?php echo $username ?>! </h1>
                     <h5 class="text-white mt-3 mb-4" data-aos="fade-right">DISINI PUSATNYA SMARTPHONE!</h5> 
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="section-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center" data-aos="fade-down" data-aos-delay="50">
-                    <div class="section-title">
-                        <h1 class="display-4 fw-semibold">Kenapa Memilih KaiSHOP?</h1>
-                        <div class="line"></div>
-                        <div class="row">
-                          <div class="col-lg-4 col-md-10 col-10">
-                              <div class="about-img">
-                                  <img src="media/tentang.jpeg" alt="" class="img-fluid border border-dark">
-                              </div>
-                          </div>
-                          <div class="col-lg-8 col-md-10 col-10 ps-lg-0 mt-md-1">
-                              <div class="about-text">
-                                    <p class="tentang">Toko kami adalah destinasi yang sempurna bagi para pecinta teknologi yang ingin membeli hp berkualitas tinggi dengan harga yang bersaing. <br> Kami memiliki koleksi produk yang lengkap dari berbagai merek terkenal dan memberikan pelayanan yang ramah dan profesional kepada semua pelanggan kami.<br> Kami menawarkan pengalaman belanja yang aman dan nyaman, dan berusaha untuk memberikan pelayanan yang terbaik untuk memastikan kepuasan pelanggan kami.</p>
-                              </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-    </section>
-
-    <!-- PRODUK -->
+    <!-- Cara Checkout -->
     <section id="produk" class="section-padding border-top">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center" data-aos="fade-down" data-aos-delay="50">
                     <div class="section-title">
-                        <h1 class="display-4 fw-semibold">Produk Unggulan Kami</h1>
+                        <h1 class="display-4 fw-semibold">CARA CHECKOUT</h1>
                         <div class="line"></div>
-                        <div class="row">
-                            <div class="about-text">
-                                <!-- booking -->
-                                <div class="booking">
-                                <div class="row row-cols-1 row-cols-md-4 g-4" style="margin-left: 120px">
-                                    <div class="col" style="width: 22%">
-                                    <div class="card text-center">
-                                        <img
-                                        src="media/samsungs12.jpg"
-                                        class="card-img-top"
-                                        alt="..."
-                                        />
-                                        <div class="card-body">
-                                        <h2 class="card-title">Samsung S12</h2>
-                                        <h5 class="card-text">Rp. 18.000.000</h5>
-                                        <h5 class="card-text">Stock 999+</h5>
-                                        <i>Untuk Pembelian Silahkan Login</i>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="col" style="width: 22%">
-                                    <div class="card text-center">
-                                        <img
-                                        src="media/iphonexr.jpg"
-                                        class="card-img-top"
-                                        alt="..."
-                                        />
-                                        <div class="card-body">
-                                        <h2 class="card-title">iPhone <br> XR</h2>
-                                        <h5 class="card-text">Rp. 3.000.000</h5>
-                                        <h5 class="card-text">Stock 999+</h5>
-                                        <i>Untuk Pembelian Silahkan Login</i>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="col" style="width: 22%">
-                                    <div class="card text-center">
-                                        <img
-                                        src="media/iphonexs.jpg"
-                                        class="card-img-top"
-                                        alt="..."
-                                        />
-                                        <div class="card-body">
-                                        <h2 class="card-title">iPhone <br> XS</h2>
-                                        <h5 class="card-text">Rp. 2.000.000</h5>
-                                        <h5 class="card-text">Stock 999+</h5>
-                                        <i>Untuk Pembelian Silahkan Login</i>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="col" style="width: 22%">
-                                    <div class="card text-center">
-                                        <img
-                                        src="media/iphone14.jpg"
-                                        class="card-img-top"
-                                        alt="..."
-                                        />
-                                        <div class="card-body">
-                                        <h2 class="card-title">iPhone <br> 14</h2>
-                                        <h5 class="card-text">Rp. 14.000.000</h5>
-                                        <h5 class="card-text">Stock 999+</h5>
-                                        <i>Untuk Pembelian Silahkan Login</i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+    <div id="prosedur" class="prosedur text-center">
+      <div class="prosedur">
+        <table
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          width="100%"
+          class="prosedur"
+        >
+          <tbody>
+            <tr>
+              <td class="prosedur">
+                <div class="hp3in_ico padbot10">
+                  <img src="media/smartphone.png" width="150px" height="150px" />
+                </div>
+                <div class="hp3in_title pagedescription1 padbot5">
+                  <strong>PILIH HANDPHONE</strong>
+                </div>
+                <div class="hp3in_desc pagedescription2">
+                    SILAHKAN LIHAT DAHULU PRODUK DI BAWAH INI!
+                </div>
+              </td>
+              <td class="prosedur">
+                <div class="hp3in_ico padbot10">
+                  <img src="media/arrow.png" width="150px" height="150px" />
+                </div>
+              </td>
+              <td class="prosedur">
+                <div class="hp3in_ico padbot10">
+                  <img src="media/klik.jpg" width="150px" height="150px" />
+                </div>
+                <div class="hp3in_title pagedescription1 padbot5">
+                  <strong>KLIK MENU CHECKOUT</strong>
+                </div>
+                <div class="hp3in_desc pagedescription2">
+                    KLIK MENU CHECKOUT UNTUK MELANJUTKAN TRANSAKSI
+                </div>
+              </td>
+              <td class="prosedur">
+                <div class="hp3in_ico padbot10">
+                  <img src="media/arrow.png" width="150px" height="150px" />
+                </div>
+              </td>
+              <td class="prpsedur">
+                <div class="hp3in_ico padbot10">
+                  <img src="media/form.png" width="150px" height="150px" />
+                </div>
+                <div class="hp3in_title pagedescription1 padbot5">
+                  <strong>ISI FORM UNTUK PEMBELIAN</strong>
+                </div>
+                <div class="hp3in_desc pagedescription2">
+                  SILAHKAN ISI FORM UNTUK BERLANGSUNGNYA TRANSAKSI
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     </section>
+
+    <section id="produk" class="section-padding border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center" data-aos="fade-down" data-aos-delay="50">
+                    <div class="section-title">
+                        <h1 class="display-4 fw-semibold">List Produk Kami</h1>
+                        <div class="line"></div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- booking -->
+        <div class="booking">
+            <div class="row row-cols-1 row-cols-md-4 g-4" style="margin-left: 120px">
+                <?php
+                $query = "SELECT * FROM handphone";
+                $result = mysqli_query ($koneksi, $query);
+                
+                while ($row = mysqli_fetch_array ($result)){
+                    ?>
+                    <div class="col" style="width: 22%">
+                    <form action="index-login.php?id=<?= $row ['id_hp'] ?>" method="post">
+                    <div class="card text-center">
+                        <img
+                        src="media/<?= $row ['gambar']?>"
+                        class="card-img-top"
+                        alt="..."
+                        />
+                        <div class="card-body">
+                        <h2 class="card-title"><?= $row ['merk']?></h2>
+                        <h5 class="card-text">Rp. <?= number_format($row['harga_hp'],0,',','.')?></h5>
+                        <li class="desc"><?= $row['spesifikasi']?>
+                        <li class="desc"><?= $row['spesifikasi2']?>
+                        </li>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+        </section>
+
+
 
     <!-- SERVICES -->
     <section id="services" class="section-padding border-top">
@@ -203,8 +224,9 @@ include("koneksi.php");
                         <div class="iconbox">
                             <i class="fa-solid fa-person"></i>
                         </div>
-                        <h5 class="mt-4 mb-3">CUSTOMER SERVICE SELALU SIAP</h5>
+                        <a href="contact.php"><h5 class="mt-4 mb-3">CUSTOMER SERVICE SELALU SIAP</h5></a>
                         <p>Customer Service kami yang siap membantu anda untuk mengatasi masalah anda saat belanja.</p>
+                        <p><i>Klik menu ini untuk menghubungi customer service</i></p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6" data-aos="fade-down" data-aos-delay="350">
